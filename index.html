@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>アンちゃん</title>
+  
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="アンちゃん">
+  <meta name="theme-color" content="#ffffff">
+
+  <style>
+    :root {
+      --bg: #f9f9fb;
+      --surface: #ffffff;
+      --text-main: #111827;
+      --text-sub: #6b7280;
+      --border: #e5e7eb;
+      --border-subtle: #f3f4f6;
+      --accent: #1f2937;
+      --maru: #059669;
+      --batsu: #dc2626;
+      --radius: 12px;
+      --transition: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      padding: 24px 16px 40px;
+      display: flex;
+      justify-content: center;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    header {
+      text-align: center;
+      padding-bottom: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    header h1 {
+      font-size: 1.35rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: var(--text-main);
+    }
+
+    .header-level {
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      background: var(--border-subtle);
+      padding: 2px 12px;
+      border-radius: 9999px;
+      border: 1px solid var(--border);
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.03);
+    }
+
+    .section-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--text-sub);
+      margin-bottom: 14px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    label {
+      font-size: 0.8rem;
+      color: var(--text-sub);
+      font-weight: 500;
+    }
+
+    input[type="text"], select, button {
+      font-family: inherit;
+      font-size: 0.95rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      background: var(--surface);
+      color: var(--text-main);
+      outline: none;
+      transition: border-color var(--transition);
+    }
+
+    input[type="text"]:focus, select:focus {
+      border-color: var(--accent);
+    }
+
+    .btn-solid {
+      background: var(--accent);
+      color: #fff;
+      border: 1px solid var(--accent);
+      cursor: pointer;
+      font-weight: 500;
+      transition: opacity var(--transition);
+    }
+
+    .btn-solid:hover {
+      opacity: 0.9;
+    }
+
+    .btn-outline {
+      background: var(--surface);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      font-weight: 500;
+      transition: all var(--transition);
+    }
+
+    .btn-outline:hover {
+      background: var(--border-subtle);
+    }
+
+    .btn-icon {
+      padding: 0 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition);
+    }
+
+    .btn-icon:hover {
+      background: var(--border-subtle);
+    }
+
+    .btn-icon:disabled {
+      opacity: 0.2;
+      cursor: not-allowed;
+      background: var(--surface);
+    }
+
+    .btn-icon-danger {
+      padding: 0 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--batsu);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition);
+    }
+
+    .btn-icon-danger:hover {
+      background: #fef2f2;
+      border-color: var(--batsu);
+    }
+
+    .btn-icon-danger:disabled {
+      opacity: 0.2;
+      cursor: not-allowed;
+      border-color: var(--border);
+      background: var(--surface);
+    }
+
+    .image-attach-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .image-preview-wrapper {
+      position: relative;
+      display: inline-block;
+      max-width: 120px;
+    }
+
+    .image-preview-wrapper img {
+      max-width: 100%;
+      max-height: 80px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      object-fit: cover;
+      display: block;
+    }
+
+    .btn-remove-img {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--batsu);
+      color: #fff;
+      border: none;
+      font-size: 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .mode-nav {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding: 4px;
+      background: var(--border-subtle);
+      border-radius: 10px;
+      margin-bottom: 16px;
+      gap: 4px;
+    }
+
+    .mode-tab {
+      background: transparent;
+      border: none;
+      padding: 10px;
+      border-radius: 7px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-sub);
+      cursor: pointer;
+      transition: all var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .mode-tab span {
+      font-size: 0.75rem;
+      opacity: 0.85;
+    }
+
+    .mode-tab.active {
+      background: var(--surface);
+      color: var(--text-main);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    }
+
+    .flashcard {
+      min-height: 200px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .flashcard:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px -4px rgba(0, 0, 0, 0.05);
+    }
+
+    .flashcard-status {
+      font-size: 0.75rem;
+      color: var(--text-sub);
+      margin-bottom: 12px;
+      letter-spacing: 0.02em;
+    }
+
+    .card-content-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .card-img-display {
+      max-width: 100%;
+      max-height: 220px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      object-fit: contain;
+    }
+
+    .card-front {
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      white-space: pre-wrap;
+    }
+
+    .card-hint {
+      margin-top: 14px;
+      font-size: 0.8rem;
+      color: var(--text-sub);
+      opacity: 0.7;
+    }
+
+    .card-back-box {
+      width: 100%;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .card-back {
+      font-size: 1.3rem;
+      font-weight: 500;
+      color: var(--text-main);
+      white-space: pre-wrap;
+    }
+
+    .eval-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .btn-choice {
+      height: 52px;
+      border-radius: 8px;
+      font-size: 1.4rem;
+      font-weight: 400;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface);
+      transition: all var(--transition);
+    }
+
+    .btn-choice:disabled {
+      opacity: 0.2;
+      cursor: not-allowed;
+      border-color: var(--border);
+    }
+
+    .btn-maru {
+      border: 1px solid var(--border);
+      color: var(--maru);
+    }
+
+    .btn-maru:not(:disabled):hover {
+      background: var(--maru);
+      color: #fff;
+      border-color: var(--maru);
+    }
+
+    .btn-batsu {
+      border: 1px solid var(--border);
+      color: var(--batsu);
+    }
+
+    .btn-batsu:not(:disabled):hover {
+      background: var(--batsu);
+      color: #fff;
+      border-color: var(--batsu);
+    }
+
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 340px;
+      overflow-y: auto;
+      margin-top: 8px;
+      padding-right: 4px;
+    }
+
+    .card-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 10px 12px;
+      background: var(--border-subtle);
+      border-radius: 8px;
+      border: 1px solid transparent;
+      font-size: 0.9rem;
+    }
+
+    .card-item-view {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .card-item-content {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 4px;
+      overflow: hidden;
+    }
+
+    .item-front {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .item-back {
+      color: var(--text-sub);
+      font-size: 0.85rem;
+    }
+
+    .item-list-thumb {
+      max-height: 50px;
+      max-width: 100px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      object-fit: cover;
+      display: block;
+      margin-top: 2px;
+    }
+
+    .item-meta {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin-top: 2px;
+    }
+
+    .item-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      padding: 1px 6px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text-sub);
+    }
+
+    .item-badge-danger {
+      color: var(--batsu);
+      background: #fef2f2;
+      border-color: #fecdd3;
+    }
+
+    .card-item-actions {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .btn-small {
+      padding: 4px 8px;
+      font-size: 0.75rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .btn-edit {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+    }
+
+    .btn-del {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--batsu);
+    }
+
+    .card-item-edit {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .card-item-edit input[type="text"] {
+      font-size: 0.85rem;
+      padding: 6px 10px;
+    }
+
+    .card-item-edit-actions {
+      display: flex;
+      gap: 6px;
+      justify-content: flex-end;
+    }
+
+    .empty-state {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-sub);
+      padding: 24px 0;
+    }
+
+    .backup-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>アンちゃん</h1>
+    <div id="userLevel" class="header-level">Lv.0</div>
+  </header>
+
+  <!-- デッキ管理 -->
+  <section class="card">
+    <div class="section-title">デッキ選択</div>
+    <div class="form-group" style="flex-direction: row; gap: 6px;">
+      <select id="deckSelect" style="flex: 1;"></select>
+      <button id="moveDeckUpBtn" class="btn-icon" type="button" title="上へ移動">↑</button>
+      <button id="moveDeckDownBtn" class="btn-icon" type="button" title="下へ移動">↓</button>
+      <button id="deleteDeckBtn" class="btn-icon-danger" type="button" title="このデッキを削除">✕</button>
+    </div>
+    <div class="form-group" style="flex-direction: row; gap: 8px; margin-bottom: 0;">
+      <input type="text" id="newDeckName" placeholder="新しいデッキ名" style="flex: 1;">
+      <button id="addDeckBtn" class="btn-solid" type="button">追加</button>
+    </div>
+  </section>
+
+  <!-- カード登録 -->
+  <section class="card" id="addCardSection">
+    <div class="section-title">カードの追加</div>
+    
+    <div class="form-group">
+      <label for="inputFront">オモテ（問題・用語）</label>
+      <input type="text" id="inputFront" placeholder="例: eat" autocomplete="off">
+      <div class="image-attach-box">
+        <button type="button" class="btn-outline btn-small" onclick="triggerImgUpload('front')">＋ 画像添付</button>
+        <input type="file" id="fileFrontImg" accept="image/*" style="display: none;">
+        <div id="previewBoxFront" style="display: none;" class="image-preview-wrapper">
+          <img id="previewImgFront" src="" alt="オモテ画像プレビュー">
+          <button type="button" class="btn-remove-img" onclick="removeImg('front')">✕</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="inputBack">ウラ（解答・意味）</label>
+      <input type="text" id="inputBack" placeholder="例: 食べる" autocomplete="off">
+      <div class="image-attach-box">
+        <button type="button" class="btn-outline btn-small" onclick="triggerImgUpload('back')">＋ 画像添付</button>
+        <input type="file" id="fileBackImg" accept="image/*" style="display: none;">
+        <div id="previewBoxBack" style="display: none;" class="image-preview-wrapper">
+          <img id="previewImgBack" src="" alt="ウラ画像プレビュー">
+          <button type="button" class="btn-remove-img" onclick="removeImg('back')">✕</button>
+        </div>
+      </div>
+    </div>
+
+    <button id="addCardBtn" class="btn-solid" type="button" style="width: 100%; margin-top: 6px;">登録する</button>
+  </section>
+
+  <!-- 学習・演習 -->
+  <section class="card">
+    <div class="mode-nav">
+      <button type="button" id="modeBtnNormal" class="mode-tab active">
+        ノーマル
+        <span id="countNormal">0問</span>
+      </button>
+      <button type="button" id="modeBtnFree" class="mode-tab">
+        フリー
+        <span id="countFree">0問</span>
+      </button>
+    </div>
+
+    <!-- 暗記カード本体 -->
+    <div id="flashcard" class="flashcard">
+      <div id="flashcardStatus" class="flashcard-status">-</div>
+      
+      <div class="card-content-area">
+        <img id="cardFrontImg" class="card-img-display" style="display: none;">
+        <div id="cardFront" class="card-front">カードがありません</div>
+      </div>
+
+      <div id="tapHint" class="card-hint">タップして答えを表示</div>
+
+      <div id="cardBackBox" class="card-back-box" style="display: none;">
+        <div class="card-content-area">
+          <img id="cardBackImg" class="card-img-display" style="display: none;">
+          <div id="cardBack" class="card-back"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 判定ボタン（左: 〇 / 右: ✕） -->
+    <div class="eval-actions">
+      <button id="btnEvalMaru" class="btn-choice btn-maru" type="button" disabled>〇</button>
+      <button id="btnEvalBatsu" class="btn-choice btn-batsu" type="button" disabled>✕</button>
+    </div>
+  </section>
+
+  <!-- カード一覧・管理 -->
+  <section class="card">
+    <div class="section-title" id="cardListTitle">登録カード一覧 (0枚)</div>
+    <div id="cardListContainer" class="card-list"></div>
+  </section>
+
+  <!-- データ管理 -->
+  <section class="card">
+    <div class="section-title">データ管理</div>
+    <div class="backup-controls">
+      <button id="exportBtn" class="btn-outline" type="button">データを保存</button>
+      <button id="importBtn" class="btn-outline" type="button">データを復元</button>
+      <input type="file" id="fileInput" accept=".json" style="display: none;">
+    </div>
+  </section>
+</div>
+
+<script>
+const ALL_DECKS_KEY = "__ALL__";
+
+const INTERVAL_STAGES = [
+  { label: "1分", ms: 1 * 60 * 1000 },
+  { label: "3分", ms: 3 * 60 * 1000 },
+  { label: "5分", ms: 5 * 60 * 1000 },
+  { label: "10分", ms: 10 * 60 * 1000 },
+  { label: "30分", ms: 30 * 60 * 1000 },
+  { label: "1時間", ms: 1 * 60 * 60 * 1000 },
+  { label: "3時間", ms: 3 * 60 * 60 * 1000 },
+  { label: "6時間", ms: 6 * 60 * 60 * 1000 },
+  { label: "12時間", ms: 12 * 60 * 60 * 1000 },
+  { label: "1日", ms: 24 * 60 * 60 * 1000 },
+  { label: "3日", ms: 3 * 24 * 60 * 60 * 1000 },
+  { label: "1週間", ms: 7 * 24 * 60 * 60 * 1000 },
+  { label: "2週間", ms: 14 * 24 * 60 * 60 * 1000 },
+  { label: "1か月", ms: 30 * 24 * 60 * 60 * 1000 },
+  { label: "3か月", ms: 90 * 24 * 60 * 60 * 1000 },
+  { label: "半年", ms: 180 * 24 * 60 * 60 * 1000 },
+  { label: "1年", ms: 365 * 24 * 60 * 60 * 1000 }
+];
+
+const DEFAULT_DECKS = [
+  "英単語", "英熟語", "英文法", "数学の公式", "漢字", 
+  "古文単語", "古文助動詞", "漢文句形", "化学", "物理", 
+  "生物", "地学", "世界史", "日本史", "年号", 
+  "地理", "政経", "倫理", "情報"
+];
+
+const STORAGE_KEY = "an_chan_app_storage";
+
+let appState = {
+  decks: [...DEFAULT_DECKS],
+  currentDeck: ALL_DECKS_KEY,
+  cards: [],
+  totalFlips: 0
+};
+
+let currentMode = "normal";
+let currentCard = null;
+let isAnswerRevealed = false;
+let freePool = [];
+let editingCardId = null;
+
+let newCardFrontImg = null;
+let newCardBackImg = null;
+
+function loadData() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (raw) {
+    try {
+      const parsed = JSON.parse(raw);
+      if (parsed.decks && parsed.decks.length > 0) {
+        appState = parsed;
+        if (typeof appState.totalFlips !== "number") appState.totalFlips = 0;
+      }
+    } catch (e) {
+      console.error("データ破損", e);
+    }
+  }
+  updateDeckSelect();
+  refreshCounts();
+  updateLevelDisplay();
+  renderCardList();
+  initMode(currentMode);
+}
+
+function saveData() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+  refreshCounts();
+  updateLevelDisplay();
+  renderCardList();
+}
+
+const userLevel = document.getElementById("userLevel");
+const deckSelect = document.getElementById("deckSelect");
+const moveDeckUpBtn = document.getElementById("moveDeckUpBtn");
+const moveDeckDownBtn = document.getElementById("moveDeckDownBtn");
+const deleteDeckBtn = document.getElementById("deleteDeckBtn");
+const newDeckName = document.getElementById("newDeckName");
+const addDeckBtn = document.getElementById("addDeckBtn");
+
+const addCardSection = document.getElementById("addCardSection");
+const inputFront = document.getElementById("inputFront");
+const inputBack = document.getElementById("inputBack");
+const fileFrontImg = document.getElementById("fileFrontImg");
+const fileBackImg = document.getElementById("fileBackImg");
+const previewBoxFront = document.getElementById("previewBoxFront");
+const previewBoxBack = document.getElementById("previewBoxBack");
+const previewImgFront = document.getElementById("previewImgFront");
+const previewImgBack = document.getElementById("previewImgBack");
+const addCardBtn = document.getElementById("addCardBtn");
+
+const modeBtnNormal = document.getElementById("modeBtnNormal");
+const modeBtnFree = document.getElementById("modeBtnFree");
+const countNormal = document.getElementById("countNormal");
+const countFree = document.getElementById("countFree");
+
+const flashcard = document.getElementById("flashcard");
+const flashcardStatus = document.getElementById("flashcardStatus");
+const cardFront = document.getElementById("cardFront");
+const cardFrontImg = document.getElementById("cardFrontImg");
+const tapHint = document.getElementById("tapHint");
+const cardBackBox = document.getElementById("cardBackBox");
+const cardBack = document.getElementById("cardBack");
+const cardBackImg = document.getElementById("cardBackImg");
+
+const btnEvalMaru = document.getElementById("btnEvalMaru");
+const btnEvalBatsu = document.getElementById("btnEvalBatsu");
+
+const cardListTitle = document.getElementById("cardListTitle");
+const cardListContainer = document.getElementById("cardListContainer");
+
+const exportBtn = document.getElementById("exportBtn");
+const importBtn = document.getElementById("importBtn");
+const fileInput = document.getElementById("fileInput");
+
+function updateLevelDisplay() {
+  userLevel.textContent = `Lv.${appState.totalFlips || 0}`;
+}
+
+window.triggerImgUpload = function(target) {
+  if (target === "front") fileFrontImg.click();
+  if (target === "back") fileBackImg.click();
+};
+
+window.removeImg = function(target) {
+  if (target === "front") {
+    newCardFrontImg = null;
+    fileFrontImg.value = "";
+    previewBoxFront.style.display = "none";
+    previewImgFront.src = "";
+  } else {
+    newCardBackImg = null;
+    fileBackImg.value = "";
+    previewBoxBack.style.display = "none";
+    previewImgBack.src = "";
+  }
+};
+
+function handleFileSelect(file, callback) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => callback(e.target.result);
+  reader.readAsDataURL(file);
+}
+
+fileFrontImg.addEventListener("change", (e) => {
+  handleFileSelect(e.target.files[0], (base64) => {
+    newCardFrontImg = base64;
+    previewImgFront.src = base64;
+    previewBoxFront.style.display = "inline-block";
+  });
+});
+
+fileBackImg.addEventListener("change", (e) => {
+  handleFileSelect(e.target.files[0], (base64) => {
+    newCardBackImg = base64;
+    previewImgBack.src = base64;
+    previewBoxBack.style.display = "inline-block";
+  });
+});
+
+function getScopeCards() {
+  if (appState.currentDeck === ALL_DECKS_KEY) {
+    return appState.cards;
+  }
+  return appState.cards.filter(c => c.deckId === appState.currentDeck);
+}
+
+function updateDeckSelect() {
+  deckSelect.innerHTML = "";
+
+  const optAll = document.createElement("option");
+  optAll.value = ALL_DECKS_KEY;
+  optAll.textContent = "すべて";
+  if (appState.currentDeck === ALL_DECKS_KEY) optAll.selected = true;
+  deckSelect.appendChild(optAll);
+
+  appState.decks.forEach(deck => {
+    const opt = document.createElement("option");
+    opt.value = deck;
+    opt.textContent = deck;
+    if (deck === appState.currentDeck) opt.selected = true;
+    deckSelect.appendChild(opt);
+  });
+
+  const isAll = (appState.currentDeck === ALL_DECKS_KEY);
+  deleteDeckBtn.disabled = isAll;
+  addCardSection.style.display = isAll ? "none" : "block";
+
+  if (isAll) {
+    moveDeckUpBtn.disabled = true;
+    moveDeckDownBtn.disabled = true;
+  } else {
+    const idx = appState.decks.indexOf(appState.currentDeck);
+    moveDeckUpBtn.disabled = (idx <= 0);
+    moveDeckDownBtn.disabled = (idx === -1 || idx >= appState.decks.length - 1);
+  }
+}
+
+function refreshCounts() {
+  const now = Date.now();
+  const scopeCards = getScopeCards();
+  const dueCount = scopeCards.filter(c => c.nextReviewTime <= now).length;
+  
+  countNormal.textContent = `${dueCount}問`;
+  countFree.textContent = `全${scopeCards.length}問`;
+}
+
+function shuffleArray(array) {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function initMode(mode) {
+  currentMode = mode;
+  if (mode === "normal") {
+    modeBtnNormal.classList.add("active");
+    modeBtnFree.classList.remove("active");
+  } else {
+    modeBtnNormal.classList.remove("active");
+    modeBtnFree.classList.add("active");
+    const scopeCards = getScopeCards();
+    freePool = shuffleArray(scopeCards);
+  }
+  loadNextQuestion();
+}
+
+function loadNextQuestion() {
+  isAnswerRevealed = false;
+  btnEvalMaru.disabled = true;
+  btnEvalBatsu.disabled = true;
+  cardBackBox.style.display = "none";
+  tapHint.style.display = "block";
+
+  const now = Date.now();
+  const scopeCards = getScopeCards();
+
+  if (currentMode === "normal") {
+    const dueCards = scopeCards.filter(c => c.nextReviewTime <= now);
+    if (dueCards.length === 0) {
+      currentCard = null;
+      cardFront.textContent = "復習期日のカードはありません";
+      cardFrontImg.style.display = "none";
+      tapHint.style.display = "none";
+      flashcardStatus.textContent = "完了";
+      return;
+    }
+    const randomIndex = Math.floor(Math.random() * dueCards.length);
+    currentCard = dueCards[randomIndex];
+    const deckLabel = appState.currentDeck === ALL_DECKS_KEY ? `[${currentCard.deckId}] ` : "";
+    flashcardStatus.textContent = `${deckLabel}残り ${dueCards.length} 問`;
+  } else {
+    if (freePool.length === 0) {
+      if (scopeCards.length === 0) {
+        currentCard = null;
+        cardFront.textContent = "カードがありません";
+        cardFrontImg.style.display = "none";
+        tapHint.style.display = "none";
+        flashcardStatus.textContent = "未登録";
+        return;
+      }
+      freePool = shuffleArray(scopeCards);
+    }
+    currentCard = freePool.pop();
+    const deckLabel = appState.currentDeck === ALL_DECKS_KEY ? `[${currentCard.deckId}] ` : "";
+    flashcardStatus.textContent = `${deckLabel}残り ${freePool.length + 1} 問`;
+  }
+
+  cardFront.textContent = currentCard.front || "";
+  if (currentCard.frontImg) {
+    cardFrontImg.src = currentCard.frontImg;
+    cardFrontImg.style.display = "block";
+  } else {
+    cardFrontImg.style.display = "none";
+  }
+
+  cardBack.textContent = currentCard.back || "";
+  if (currentCard.backImg) {
+    cardBackImg.src = currentCard.backImg;
+    cardBackImg.style.display = "block";
+  } else {
+    cardBackImg.style.display = "none";
+  }
+}
+
+flashcard.addEventListener("click", () => {
+  if (!currentCard || isAnswerRevealed) return;
+  isAnswerRevealed = true;
+  tapHint.style.display = "none";
+  cardBackBox.style.display = "block";
+  btnEvalMaru.disabled = false;
+  btnEvalBatsu.disabled = false;
+});
+
+function handleEvaluation(isRemembered) {
+  if (!currentCard || !isAnswerRevealed) return;
+
+  const now = Date.now();
+  const targetCard = appState.cards.find(c => c.id === currentCard.id);
+
+  appState.totalFlips = (appState.totalFlips || 0) + 1;
+  targetCard.totalAnswers = (targetCard.totalAnswers || 0) + 1;
+
+  if (isRemembered) {
+    targetCard.correctAnswers = (targetCard.correctAnswers || 0) + 1;
+  } else {
+    targetCard.mistakes = (targetCard.mistakes || 0) + 1;
+  }
+
+  if (currentMode === "normal") {
+    if (isRemembered) {
+      const nextStage = Math.min(targetCard.stage + 1, INTERVAL_STAGES.length - 1);
+      targetCard.stage = nextStage;
+      targetCard.nextReviewTime = now + INTERVAL_STAGES[nextStage].ms;
+    } else {
+      targetCard.stage = 0;
+      targetCard.nextReviewTime = now + (1 * 60 * 1000);
+    }
+  } else {
+    if (!isRemembered) {
+      targetCard.stage = 0;
+      targetCard.nextReviewTime = now;
+    }
+  }
+
+  saveData();
+  loadNextQuestion();
+}
+
+btnEvalMaru.addEventListener("click", () => handleEvaluation(true));
+btnEvalBatsu.addEventListener("click", () => handleEvaluation(false));
+
+modeBtnNormal.addEventListener("click", () => initMode("normal"));
+modeBtnFree.addEventListener("click", () => initMode("free"));
+
+moveDeckUpBtn.addEventListener("click", () => {
+  const idx = appState.decks.indexOf(appState.currentDeck);
+  if (idx <= 0) return;
+  const temp = appState.decks[idx];
+  appState.decks[idx] = appState.decks[idx - 1];
+  appState.decks[idx - 1] = temp;
+  saveData();
+  updateDeckSelect();
+});
+
+moveDeckDownBtn.addEventListener("click", () => {
+  const idx = appState.decks.indexOf(appState.currentDeck);
+  if (idx === -1 || idx >= appState.decks.length - 1) return;
+  const temp = appState.decks[idx];
+  appState.decks[idx] = appState.decks[idx + 1];
+  appState.decks[idx + 1] = temp;
+  saveData();
+  updateDeckSelect();
+});
+
+// 新規デッキ追加（「すべて」の直下に挿入）
+addDeckBtn.addEventListener("click", () => {
+  const name = newDeckName.value.trim();
+  if (!name || name === "すべて") return;
+  if (!appState.decks.includes(name)) {
+    appState.decks.unshift(name); // 先頭に挿入
+    appState.currentDeck = name;
+    saveData();
+    updateDeckSelect();
+    newDeckName.value = "";
+    initMode(currentMode);
+  }
+});
+
+deleteDeckBtn.addEventListener("click", () => {
+  if (appState.currentDeck === ALL_DECKS_KEY) return;
+  const targetDeck = appState.currentDeck;
+  const isConfirmed = confirm(`デッキ「${targetDeck}」と、このデッキに含まれるすべてのカードを削除しますか？`);
+  if (!isConfirmed) return;
+
+  appState.decks = appState.decks.filter(d => d !== targetDeck);
+  appState.cards = appState.cards.filter(c => c.deckId !== targetDeck);
+  appState.currentDeck = ALL_DECKS_KEY;
+
+  saveData();
+  updateDeckSelect();
+  initMode(currentMode);
+});
+
+deckSelect.addEventListener("change", (e) => {
+  appState.currentDeck = e.target.value;
+  updateDeckSelect();
+  editingCardId = null;
+  saveData();
+  initMode(currentMode);
+});
+
+addCardBtn.addEventListener("click", () => {
+  if (appState.currentDeck === ALL_DECKS_KEY) return;
+
+  const front = inputFront.value.trim();
+  const back = inputBack.value.trim();
+
+  if (!front && !newCardFrontImg) {
+    alert("オモテ面のテキストまたは画像を入力してください。");
+    return;
+  }
+  if (!back && !newCardBackImg) {
+    alert("ウラ面のテキストまたは画像を入力してください。");
+    return;
+  }
+
+  const newCard = {
+    id: "card_" + Date.now() + "_" + Math.random().toString(36).substring(2, 6),
+    deckId: appState.currentDeck,
+    front: front,
+    back: back,
+    frontImg: newCardFrontImg,
+    backImg: newCardBackImg,
+    stage: 0,
+    nextReviewTime: Date.now(),
+    totalAnswers: 0,
+    correctAnswers: 0,
+    mistakes: 0
+  };
+
+  appState.cards.push(newCard);
+  saveData();
+
+  inputFront.value = "";
+  inputBack.value = "";
+  removeImg("front");
+  removeImg("back");
+
+  initMode(currentMode);
+});
+
+function renderCardList() {
+  const scopeCards = getScopeCards();
+  const titlePrefix = appState.currentDeck === ALL_DECKS_KEY ? "すべて (統合一覧)" : "登録カード一覧";
+  cardListTitle.textContent = `${titlePrefix} (${scopeCards.length}枚)`;
+  cardListContainer.innerHTML = "";
+
+  if (scopeCards.length === 0) {
+    cardListContainer.innerHTML = '<div class="empty-state">該当するカードがありません</div>';
+    return;
+  }
+
+  const sortedCards = [...scopeCards].sort((a, b) => {
+    const mistakeA = a.mistakes || 0;
+    const mistakeB = b.mistakes || 0;
+    if (mistakeB !== mistakeA) {
+      return mistakeB - mistakeA;
+    }
+    const stageA = a.stage || 0;
+    const stageB = b.stage || 0;
+    return stageB - stageA;
+  });
+
+  sortedCards.forEach(card => {
+    const itemEl = document.createElement("div");
+    itemEl.className = "card-item";
+
+    if (editingCardId === card.id) {
+      itemEl.innerHTML = `
+        <div class="card-item-edit">
+          <input type="text" id="editFront_${card.id}" value="${escapeHtml(card.front)}">
+          <input type="text" id="editBack_${card.id}" value="${escapeHtml(card.back)}">
+          <div class="card-item-edit-actions">
+            <button class="btn-small btn-edit" onclick="cancelEdit()">キャンセル</button>
+            <button class="btn-small btn-solid" onclick="saveCardEdit('${card.id}')">保存</button>
+          </div>
+        </div>
+      `;
+    } else {
+      const stageInfo = INTERVAL_STAGES[card.stage] || INTERVAL_STAGES[0];
+      const frontImgTag = card.frontImg ? `<img src="${card.frontImg}" class="item-list-thumb" alt="オモテ画像">` : "";
+      const backImgTag = card.backImg ? `<img src="${card.backImg}" class="item-list-thumb" alt="ウラ画像">` : "";
+      const mistakeCount = card.mistakes || 0;
+      const mistakeBadge = mistakeCount > 0 ? `<span class="item-badge item-badge-danger">ミス: ${mistakeCount}回</span>` : "";
+
+      itemEl.innerHTML = `
+        <div class="card-item-view">
+          <div class="card-item-content">
+            <div class="item-front">${escapeHtml(card.front)}</div>
+            ${frontImgTag}
+            <div class="item-back">${escapeHtml(card.back)}</div>
+            ${backImgTag}
+            <div class="item-meta">
+              <span class="item-badge">${escapeHtml(card.deckId)}</span>
+              <span class="item-badge">間隔: ${stageInfo.label}</span>
+              ${mistakeBadge}
+            </div>
+          </div>
+          <div class="card-item-actions">
+            <button class="btn-small btn-edit" onclick="startEdit('${card.id}')">編集</button>
+            <button class="btn-small btn-del" onclick="deleteCard('${card.id}')">削除</button>
+          </div>
+        </div>
+      `;
+    }
+
+    cardListContainer.appendChild(itemEl);
+  });
+}
+
+function escapeHtml(str) {
+  if (!str) return "";
+  return str.replace(/[&<>'"]/g, tag => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    "'": '&#39;',
+    '"': '&quot;'
+  }[tag] || tag));
+}
+
+window.startEdit = function(id) {
+  editingCardId = id;
+  renderCardList();
+};
+
+window.cancelEdit = function() {
+  editingCardId = null;
+  renderCardList();
+};
+
+window.saveCardEdit = function(id) {
+  const frontInput = document.getElementById(`editFront_${id}`);
+  const backInput = document.getElementById(`editBack_${id}`);
+  if (!frontInput || !backInput) return;
+
+  const newFront = frontInput.value.trim();
+  const newBack = backInput.value.trim();
+
+  const targetCard = appState.cards.find(c => c.id === id);
+  if (targetCard) {
+    if (!newFront && !targetCard.frontImg) {
+      alert("オモテ面を入力してください。");
+      return;
+    }
+    if (!newBack && !targetCard.backImg) {
+      alert("ウラ面を入力してください。");
+      return;
+    }
+    targetCard.front = newFront;
+    targetCard.back = newBack;
+    editingCardId = null;
+    saveData();
+    initMode(currentMode);
+  }
+};
+
+window.deleteCard = function(id) {
+  const isConfirmed = confirm("このカードを削除しますか？");
+  if (!isConfirmed) return;
+
+  appState.cards = appState.cards.filter(c => c.id !== id);
+  if (editingCardId === id) editingCardId = null;
+  saveData();
+  initMode(currentMode);
+};
+
+exportBtn.addEventListener("click", () => {
+  const dataStr = JSON.stringify(appState, null, 2);
+  const blob = new Blob([dataStr], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `an_chan_backup_${new Date().toISOString().slice(0, 10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+importBtn.addEventListener("click", () => {
+  fileInput.click();
+});
+
+fileInput.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const isConfirmed = confirm("現在のデータをバックアップファイルの内容で上書きしますか？");
+  if (!isConfirmed) {
+    fileInput.value = "";
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    try {
+      const parsed = JSON.parse(event.target.result);
+      if (parsed && Array.isArray(parsed.decks) && Array.isArray(parsed.cards)) {
+        appState = parsed;
+        if (!appState.currentDeck) appState.currentDeck = ALL_DECKS_KEY;
+        if (typeof appState.totalFlips !== "number") appState.totalFlips = 0;
+        editingCardId = null;
+        saveData();
+        updateDeckSelect();
+        initMode(currentMode);
+        alert("復元が完了しました。");
+      } else {
+        alert("無効なバックアップファイル形式です。");
+      }
+    } catch (err) {
+      alert("ファイルの読み込みに失敗しました。");
+      console.error(err);
+    }
+    fileInput.value = "";
+  };
+  reader.readAsText(file);
+});
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch(err => {
+      console.error("ServiceWorker登録失敗:", err);
+    });
+  });
+}
+
+loadData();
+</script>
+</body>
+</html>
