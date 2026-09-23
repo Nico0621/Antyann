@@ -3,13 +3,13 @@
   "short_name": "アンちゃん",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#f9f9fb",
-  "theme_color": "#ffffff",
+  "background_color": "#181b20",
+  "theme_color": "#181b20",
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='100' fill='%231f2937'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='220' font-weight='bold' fill='white'>ア</text></svg>",
+      "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ]
